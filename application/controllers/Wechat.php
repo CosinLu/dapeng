@@ -13,8 +13,10 @@ class Wechat extends MY_Controller {
     	$token = 'dapeng';
     	$encodingAesKey = 'e1Z1Rp855zB15oD5GEOibGBOsv1q80osuL1g1Q9blEd';
     	$corpId = 'wx3431de4713ceb3bb';
-        $this -> load -> library('WXBizMsgCrypt',array($token, $encodingAesKey, $corpId));
-		// $wxcpt = new WXBizMsgCrypt($token, $encodingAesKey, $corpId);
-		$errCode = $this -> wxbizmsgcrypt -> VerifyURL($sVerifyMsgSig, $sVerifyTimeStamp, $sVerifyNonce, $sVerifyEchoStr, $sEchoStr);
+        $this -> load -> library('Wechat');
+        $options['token'] = $token;
+        $options['encodingaeskey'] = $encodingAesKey;
+        $options['appid'] = $corpId;
+		$this -> wechat -> valid();
     }
 }
