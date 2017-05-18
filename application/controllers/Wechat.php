@@ -32,18 +32,37 @@ class Wechat extends MY_Controller {
 		# 加载对应操作接口
 		$this->wechat->get('User', $config);*/
 		//$userlist = $wechat->getUserList();
-		$this -> _valid();
+		$this -> valid();
 	}
-	public function _valid(){    
-        $token = 'dapeng'; 
-        $signature = $this->input->get('signature'); 
-        $timestamp = $this->input->get('timestamp'); 
-        $nonce = $this->input->get('nonce'); 
-        $echostr = $this->input->get('echostr'); 
-        $tmp_arr = array($token, $timestamp, $nonce); 
-        sort($tmp_arr); 
-        $tmp_str = implode($tmp_arr); 
-        $tmp_str = sha1($tmp_str); 
-        return ($tmp_str==$signature); 
-    }
+
+    public function valid()
+   {
+      $echoStr = $_GET["echostr"];
+
+      //valid signature , option
+      if($this->checkSignature()){
+         echo $echoStr;
+         exit;
+      }
+   }
+
+   private function checkSignature()
+   {
+      $signature = $_GET["signature"];
+      $timestamp = $_GET["timestamp"];
+      $nonce = $_GET["nonce"];
+
+      $token = 'dapeng'; 
+      $tmpArr = array($token, $timestamp, $nonce);
+      sort($tmpArr);
+      $tmpStr = implode( $tmpArr );
+      $tmpStr = sha1( $tmpStr );
+
+      if( $tmpStr == $signature ){
+         return true;
+      }else{
+         return false;
+      }
+   }
+}
 }
