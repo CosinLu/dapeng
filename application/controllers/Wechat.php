@@ -64,5 +64,6 @@ class Wechat extends MY_Controller {
          return false;
       }
    }
-}
+
+   
 }
