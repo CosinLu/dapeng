@@ -1,5 +1,9 @@
 <?php
 
+include_once "sha1.php";
+include_once "xmlparse.php";
+include_once "pkcs7Encoder.php";
+include_once "errorCode.php";
 class Wechat
 {
     const MSGTYPE_TEXT                      = 'text';
