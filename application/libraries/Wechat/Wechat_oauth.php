@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 微信网页授权
  */
-require_once(BASEPATH.'libraries/Wechat/lib/Wechat_common.php');
+require_once(APPPATH.'libraries/Wechat/lib/Wechat_common.php');
 
 class CI_Wechat_oauth extends CI_Wechat_common {
 

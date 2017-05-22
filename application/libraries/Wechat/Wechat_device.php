@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @date 2016-08-22 10:35
  */
 
-require_once(BASEPATH.'libraries/Wechat/lib/Wechat_common.php');
+require_once(APPPATH.'libraries/Wechat/lib/Wechat_common.php');
 
 class CI_Wechat_device extends CI_Wechat_common {
 

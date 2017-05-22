@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author zoujingli <zoujingli@qq.com>
  * @date 2015/05/13 12:12:00
  */
-require_once(BASEPATH.'libraries/Wechat/lib/Wechat_basic.php');
+require_once(APPPATH.'libraries/Wechat/lib/Wechat_basic.php');
 
 class CI_Wechat_pay extends CI_Wechat_basic {
 
