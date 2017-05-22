@@ -20,6 +20,7 @@ class Wechat extends MY_Controller {
 	}
 	
 	public function index(){
+	    info_log('hello');
         $type   = $this -> wechat_receive -> getRev ()
             ->getRevType ();
         $openid = $this -> wechat_receive -> getRevFrom ();
