@@ -9,7 +9,7 @@
 
     function info_log($content)
     {
-        $file = APPPATH . 'logs/'.date('Y-m').'_phone.log';
+        $file = APPPATH . 'logs/'.date('Y-m').'_info.log';
 
         $uri = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : '';
         error_log(date('Y-m-d H:i:s')."========={$uri}\n".$content."\n\n",3, $file);
