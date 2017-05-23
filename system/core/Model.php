@@ -175,4 +175,29 @@ class CI_Model {
         return $this->db->affected_rows();
     }
 
+    public function getAllByCondition($condition,$key = '',$sort='DESC')
+    {
+        $data = array();
+        if (!is_array($condition)) return $data;
+
+        $this->setCondition($condition);
+        $order = $key == ''?$this->pkey:$key;
+        $this->db->order_by($order, $sort);
+        $rows = $this->db->get($this->table);
+        $data = $rows->result_array();
+
+        return $data;
+    }
+
+
+    public function getAll($sort='DESC',$key = '')
+    {
+        $order = $key == ''?$this->pkey:$key;
+        $this->db->order_by($order, $sort);
+        $rows = $this->db->get($this->table);
+        $data = $rows->result_array();
+
+        return $data;
+    }
+
 }
