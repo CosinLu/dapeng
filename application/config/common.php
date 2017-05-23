@@ -9,4 +9,5 @@ class common
     const MSGTYPE_TEXT					= 'text';
     const EVENT_SUBSCRIBE 				= 'subscribe';       //订阅
     const EVENT_UNSUBSCRIBE 			= 'unsubscribe';   //取消订阅
+    const MSGTYPE_EVENT                 = 'event';
 }
