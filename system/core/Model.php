@@ -94,6 +94,7 @@ class CI_Model {
      */
     public function getOneByCondition($condition)
     {
+        info_log('韩昂昂');
         $data = array();
         if (!is_array($condition)) return $data;
 
@@ -102,6 +103,7 @@ class CI_Model {
         $this->db->limit(1);
         $query = $this->db->get($this->table);
         $data = $query->row_array();
+        info_log($this -> lastQuery());
         return $data;
     }
 
