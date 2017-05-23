@@ -16,8 +16,7 @@ class Wechat extends MY_Controller {
 		
 		# 加载对应操作接口
 		//文件夹名注意大写
-        $this->load->library('Wechat/lib/Wechat_common',$config);
-        $this -> load -> library('Wechat/Wechat_receive');
+        $this -> load -> library('Wechat/Wechat_receive',$config);
         $this -> load -> library('Wechat/Wechat_user',$config);
         $this -> load -> model('User_model','user');
 		
@@ -36,10 +35,12 @@ class Wechat extends MY_Controller {
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
+                        info_log('关注');
                         $this->_subscribe ($openid);
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
+                        info_log('取消关注');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
@@ -89,6 +90,7 @@ class Wechat extends MY_Controller {
         if (empty($openid)) {
             return false;
         }
+        info_log($openid);
         /*$user_info = $this -> wechat_user -> getUserInfo($openid);
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
