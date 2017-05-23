@@ -94,6 +94,8 @@ class Wechat extends MY_Controller {
     public function _subscribe ($openid = '')
     {
         info_log('ll');
+        info_log($openid);
+        info_log('221');
         if (empty($openid)) {
             info_log('22');
             return false;
