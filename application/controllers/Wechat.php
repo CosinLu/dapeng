@@ -17,8 +17,8 @@ class Wechat extends MY_Controller {
 		# 加载对应操作接口
 		//文件夹名注意大写
         $this->load->library('Wechat/lib/Wechat_common',$config);
-        $this -> load -> library('Wechat/Wechat_receive',array(),'wechat_receive');
-        $this -> load -> library('Wechat/Wechat_user',array(),'wechat_user');
+        $this -> load -> library('Wechat/Wechat_receive',NULL,'wechat_receive');
+        $this -> load -> library('Wechat/Wechat_user',NULL,'wechat_user');
         $this -> load -> model('User_model','user');
 		
 	}
@@ -94,10 +94,13 @@ class Wechat extends MY_Controller {
    // 获取关注用户信息
     public function _subscribe ($openid = '')
     {
+        info_log('2');
         if (empty($openid)) {
             return false;
         }
+        info_log('1');
         $user_info = $this -> wechat_user -> getUserInfo($openid);
+        info_log('0');
         info_log(json_encode($user_info));
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
