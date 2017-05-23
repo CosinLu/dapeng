@@ -100,8 +100,10 @@ class Wechat extends MY_Controller {
         $condition['openid'] = $openid;
         $rs = $this -> user -> getOneByCondition($condition);
         if ($rs) {
+            info_log('修改');
             $res = $this -> user -> updateByCondition($condition,$data);
         } else {
+            info_log('添加');
             $res = $this -> user -> insert($data);
         }
 
