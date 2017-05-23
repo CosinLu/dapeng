@@ -114,9 +114,6 @@ class CI_Wechat_common extends CI_Wechat_basic {
      * @param string $token 手动指定access_token，非必要情况不建议用
      */
     public function checkAuth($appid = '', $appsecret = '', $token = '') {
-        info_log('appid:'.$appid);
-        info_log('secret:'.$appsecret);
-        info_log('token:'.$token);
         if (!$appid || !$appsecret) {
             $appid = $this->appid;
             $appsecret = $this->appsecret;
