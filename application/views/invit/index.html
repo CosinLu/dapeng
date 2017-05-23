@@ -24,19 +24,19 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>激活码</th>
-                            <th>使用状态</th>
-                            <th>操作</th>
+                            <th style="color: red;">ID</th>
+                            <th style="color: red;">激活码</th>
+                            <th style="color: red;">使用状态</th>
                         </tr>
                         </thead>
                         <tbody>
+                        {%foreach from=$code_data item=data%}
                         <tr>
-                            <td>Row 1</td>
-                            <td>Row 2</td>
-                            <td>Row 3</td>
-                            <td>Row 4</td>
+                            <td style="text-align: center;">{%$data.id%}</td>
+                            <td style="text-align: center;">{%$data.code%}</td>
+                            <td style="text-align: center;">{%if $data.status == 0%}未使用{%else%}已使用{%/if%}</td>
                         </tr>
+                        {%/foreach%}
                         </tbody>
                     </table>
                 </div>
@@ -45,26 +45,21 @@
     </div>
 {%include file="../public/bottom.html"%}
     <script>
-        $(function(){
-            $('.add_code').on('click',function(){
-                alert(111);
-                return
-                var url = $(this).data('url');
-                $.ajax({
-                    url : url,
-                    type: 'post',
-                    data: {'action':'add'},
-                    dataType:'json',
-                    success:function(result){
-                        if(result.code !== 200){
-                            alert(result.message);
-                            return;
-                        }else{
-                            alert(result.message);
-                            window.location.reload();
-                        }
+        $('.add_code').on('click',function(){
+            var url = $(this).data('url');
+            $.ajax({
+                url : url,
+                type: 'post',
+                dataType:'json',
+                success:function(result){
+                    if(result.code !== 200){
+                        alert(result.message);
+                        return;
+                    }else{
+                        alert(result.message);
+                        window.location.reload();
                     }
-                });
+                }
             });
         });
     </script>
