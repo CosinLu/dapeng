@@ -89,6 +89,7 @@ class CI_Wechat_user extends CI_Wechat_common {
     public function getUserInfo($openid) {
         info_log($openid);
         info_log('进来了没有呢');
+        info_log('access_token:'.$this -> access_token);
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
