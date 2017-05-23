@@ -16,8 +16,9 @@ class Wechat extends MY_Controller {
 		
 		# 加载对应操作接口
 		//文件夹名注意大写
-        $this->load->library('Wechat/Wechat_receive',$config);
-        $this->load->library('Wechat/Wechat_user',$config);
+        $this -> load -> library('Wechat/lib/Wechat_common.php',$config);
+        $this -> load -> library('Wechat/Wechat_receive',$config);
+        $this -> load -> library('Wechat/Wechat_user',$config);
         $this -> load -> model('User_model','user');
 		
 	}
