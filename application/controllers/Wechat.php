@@ -11,11 +11,14 @@ class Wechat extends MY_Controller {
 		'token'          => 'dapeng',
 		'appid'          => 'wx3431de4713ceb3bb',
 		'encodingaeskey' => 'e1Z1Rp855zB15oD5GEOibGBOsv1q80osuL1g1Q9blEd',
+        'appsecret'      => '3cc719d64bbe81bb619b96545c93105d',   
 		);
 		
 		# 加载对应操作接口
 		//文件夹名注意大写
         $this->load->library('Wechat/Wechat_receive');
+        $this->load->library('Wechat/Wechat_user',$config);
+        $this -> load -> model('User_model','user');
 		
 	}
 	
@@ -29,16 +32,17 @@ class Wechat extends MY_Controller {
                 exit();
                 break;
             case common::MSGTYPE_EVENT:
-                $event = $this->getRevEvent ();
+                $event = $this -> wechat_receive -> getRevEvent ();
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
-                    case self::EVENT_SUBSCRIBE:
-                        $pid = $this->getRevSceneId ();
+                    case common::EVENT_SUBSCRIBE:
+                        info_log('发送消息');
+                        /*$pid = $this->getRevSceneId ();
                         $this->_subscribe ($openid);
-                        $this->text("感谢您关注汉朗霓虹公众号公众号！在线报修功能已经开通，欢迎您使用。了解更多，请单击底部菜单项或访问 www.hlneon.com")->reply();
+                        $this->text("感谢您关注汉朗霓虹公众号公众号！在线报修功能已经开通，欢迎您使用。了解更多，请单击底部菜单项或访问 www.hlneon.com")->reply();*/
                         exit();
                         break;
-                    case self::EVENT_UNSUBSCRIBE:
+                    case common::EVENT_UNSUBSCRIBE:
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
@@ -88,28 +92,20 @@ class Wechat extends MY_Controller {
         if (empty($openid)) {
             return false;
         }
-        $user_info = $this->getUserInfo($openid);
-        $wx_info = array();
-        $wx_info['language'] = $user_info['language'];
-        $wx_info['city'] = $user_info['city'];
-        $wx_info['province'] = $user_info['province'];
-        if(isset($user_info['unionid'])){
-            $data['wx_unionid'] = $user_info['unionid'];
-        }
+        $user_info = $this -> wechat_user -> getUserInfo($openid);
+        $data['city'] = $user_info['city'];
+        $data['province'] = $user_info['province'];
         $data['sex'] = $user_info['sex'];
-        $data['headimgurl'] = $user_info['headimgurl'];
-        $data['wx_openid'] = $openid;
-        $data['subscribe'] = $user_info['subscribe'];
-        $data['subscribe_time'] = $user_info['subscribe_time'];
-        $data['un_subscribe_time'] = 0;
-        $data['wx_info'] = serialize($wx_info);
-        $data['status'] = 1;
+        $data['head_pic'] = $user_info['headimgurl'];
+        $data['openid'] = $openid;
+        $data['create_time'] = $user_info['subscribe_time'];
         $data['nickname']          = urlencode ($user_info['nickname']);
-        $rs = $model->where ("wx_openid='{$openid}'") ->find ();
+        $condition['openid'] = $openid;
+        $rs = $this -> user -> getOneByCondition($condition);
         if ($rs) {
-            $res = $model->where("wx_openid='{$openid}'")->save($data);
+            $res = $this -> user -> updateByCondition($condition,$data);
         } else {
-            $res = $model->add ($data);
+            $res = $this -> user -> insert($data);
         }
 
         return $res;
@@ -122,16 +118,13 @@ class Wechat extends MY_Controller {
             return true;
         }
         $where = [
-            'wx_openid' => $openid
+            'openid' => $openid
         ];
         $data  = [
-            'subscribe'         => 0,
-            'un_subscribe_time' => time(),
-            'w_id'              => 0,
-            'status'            => 0
+            'close_time'         => time(),
+            'status'            => 3
         ];
-        $res   = $model->where ($where)
-            ->save ($data);
+        $res   = $this -> user -> updateByCondition($where,$data);
         return $res;
     }
 
