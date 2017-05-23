@@ -26,10 +26,11 @@ class Wechat extends MY_Controller {
         $type   = $this -> wechat_receive -> getRev ()
             ->getRevType ();
         $openid = $this -> wechat_receive -> getRevFrom ();
+        info_log($type);
+        info_log(common::MSGTYPE_EVENT);
         switch ($type) {
             case common::MSGTYPE_TEXT:
             info_log('111');
-                $this->text("您的消息已经收到，我们会尽快根据您输入的内容完善汉朗霓虹公众号。您可以添加微信号hlneon咨询。")->reply();
                 exit();
                 break;
             case common::MSGTYPE_EVENT:
