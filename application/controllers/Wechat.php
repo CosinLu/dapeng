@@ -99,6 +99,7 @@ class Wechat extends MY_Controller {
         $data['nickname']          = urlencode ($user_info['nickname']);*/
         $data['openid'] = $openid;
         $data['create_time'] = time();
+        $data['status'] = 0;
         $condition['openid'] = $openid;
         $rs = $this -> user -> getOneByCondition($condition);
         info_log('到这儿了吗 ');
