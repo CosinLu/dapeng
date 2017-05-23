@@ -95,6 +95,7 @@ class Wechat extends MY_Controller {
     {
         info_log('ll');
         if (empty($openid)) {
+            info_log('22');
             return false;
         }
         $user_info = $this -> wechat_user -> getUserInfo($openid);
