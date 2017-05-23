@@ -16,7 +16,7 @@ class Wechat extends MY_Controller {
 		
 		# 加载对应操作接口
 		//文件夹名注意大写
-        $this->load->library('Wechat/Wechat_receive');
+        $this->load->library('Wechat/Wechat_receive',$config);
         $this->load->library('Wechat/Wechat_user',$config);
         $this -> load -> model('User_model','user');
 		
@@ -28,30 +28,33 @@ class Wechat extends MY_Controller {
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
             case common::MSGTYPE_TEXT:
+            info_log('111');
                 $this->text("您的消息已经收到，我们会尽快根据您输入的内容完善汉朗霓虹公众号。您可以添加微信号hlneon咨询。")->reply();
                 exit();
                 break;
             case common::MSGTYPE_EVENT:
+            info_log('222');
                 $event = $this -> wechat_receive -> getRevEvent ();
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
                         info_log('发送消息');
-                        /*$pid = $this->getRevSceneId ();
                         $this->_subscribe ($openid);
-                        $this->text("感谢您关注汉朗霓虹公众号公众号！在线报修功能已经开通，欢迎您使用。了解更多，请单击底部菜单项或访问 www.hlneon.com")->reply();*/
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
+            info_log('333');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
                     default:
+            info_log('444');
                         $this->_subscribe ($openid);
                         exit();
                 }
                 break;
             default:
+            info_log('555');
                 $this->_subscribe ($openid);
                 exit();
         }
