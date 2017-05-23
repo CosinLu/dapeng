@@ -29,34 +29,26 @@ class Wechat extends MY_Controller {
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
             case common::MSGTYPE_TEXT:
-            info_log('111');
                 exit();
                 break;
             case common::MSGTYPE_EVENT:
-            info_log('222');
                 $event = $this -> wechat_receive -> getRevEvent ();
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
-                info_log($event);
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
-                        info_log('发送消息');
-                        info_log('openid:'.$openid);
                         $this->_subscribe ($openid);
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
-            info_log('333');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
                     default:
-            info_log('444');
                         $this->_subscribe ($openid);
                         exit();
                 }
                 break;
             default:
-            info_log('555');
                 $this->_subscribe ($openid);
                 exit();
         }
@@ -94,14 +86,10 @@ class Wechat extends MY_Controller {
    // 获取关注用户信息
     public function _subscribe ($openid = '')
     {
-        info_log('2');
         if (empty($openid)) {
             return false;
         }
-        info_log('1');
         $user_info = $this -> wechat_user -> getUserInfo($openid);
-        info_log('0');
-        info_log(json_encode($user_info));
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
         $data['sex'] = $user_info['sex'];
@@ -112,10 +100,8 @@ class Wechat extends MY_Controller {
         $condition['openid'] = $openid;
         $rs = $this -> user -> getOneByCondition($condition);
         if ($rs) {
-            info_log('修改');
             $res = $this -> user -> updateByCondition($condition,$data);
         } else {
-            info_log('添加');
             $res = $this -> user -> insert($data);
         }
 
