@@ -147,4 +147,32 @@ class CI_Model {
         return $this->db->last_query();
     }
 
+    public function setCondition(array $condition)
+    {
+        if (empty($condition)) return;
+        foreach ($condition as $key=>$value)
+        {
+            if (is_array($value))
+            {
+                $function = $value[1];
+                $this->db->$function($key, $value[0]);
+            }
+            else
+            {
+                $this->db->where($key, $value);
+            }
+
+        }
+    }
+
+    public function updateByCondition($condition, $data)
+    {
+        if (!is_array($condition) || empty($condition) || !is_array($data) || empty($data)) return;
+
+        $this->setCondition($condition);
+        $this->db->update($this->table, $data);
+
+        return $this->db->affected_rows();
+    }
+
 }
