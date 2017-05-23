@@ -39,6 +39,7 @@ class Wechat extends MY_Controller {
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
                         info_log('发送消息');
+                        info_log('openid:'.$openid);
                         $this->_subscribe ($openid);
                         exit();
                         break;
@@ -92,6 +93,7 @@ class Wechat extends MY_Controller {
    // 获取关注用户信息
     public function _subscribe ($openid = '')
     {
+        info_log('ll');
         if (empty($openid)) {
             return false;
         }
