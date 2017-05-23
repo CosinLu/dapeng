@@ -16,8 +16,8 @@ class Wechat extends MY_Controller {
 		
 		# 加载对应操作接口
 		//文件夹名注意大写
-        $this -> load -> library('Wechat/Wechat_receive',$config);
-        $this -> load -> library('Wechat/Wechat_user',$config);
+        $this -> load -> library('Wechat/Wechat_receive',$config,'wechat_receive');
+        $this -> load -> library('Wechat/Wechat_user',$config,'wechat_user');
         $this -> load -> model('User_model','user');
 		
 	}
@@ -98,6 +98,7 @@ class Wechat extends MY_Controller {
             return false;
         }
         $user_info = $this -> wechat_user -> getUserInfo($openid);
+        info_log(json_encode($user_info));
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
         $data['sex'] = $user_info['sex'];
