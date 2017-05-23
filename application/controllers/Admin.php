@@ -10,7 +10,6 @@ class Admin extends MY_Controller {
 
     public function index()
     {
-    	echo common::EVENT_SUBSCRIBE;die;
         $this -> display('admin/admin_index.html');
     }
 }
