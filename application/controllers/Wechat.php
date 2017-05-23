@@ -26,36 +26,28 @@ class Wechat extends MY_Controller {
         $type   = $this -> wechat_receive -> getRev ()
             ->getRevType ();
         $openid = $this -> wechat_receive -> getRevFrom ();
-        info_log($type);
-        info_log(common::MSGTYPE_EVENT);
         switch ($type) {
             case common::MSGTYPE_TEXT:
-            info_log('111');
                 exit();
                 break;
             case common::MSGTYPE_EVENT:
-            info_log('222');
                 $event = $this -> wechat_receive -> getRevEvent ();
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
-                        info_log('发送消息');
                         $this->_subscribe ($openid);
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
-            info_log('333');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
                     default:
-            info_log('444');
                         $this->_subscribe ($openid);
                         exit();
                 }
                 break;
             default:
-            info_log('555');
                 $this->_subscribe ($openid);
                 exit();
         }
