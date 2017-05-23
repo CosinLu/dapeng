@@ -9,6 +9,7 @@ class MY_Controller extends CI_Controller {
     public function __construct($needLogin = true)
     {
         parent::__construct();
+        include_once APPPATH.'config/common.php';
 
     }
 
