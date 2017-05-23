@@ -89,15 +89,14 @@ class Wechat extends MY_Controller {
         if (empty($openid)) {
             return false;
         }
-        info_log('进入判断');
-        $user_info = $this -> wechat_user -> getUserInfo($openid);
+        /*$user_info = $this -> wechat_user -> getUserInfo($openid);
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
         $data['sex'] = $user_info['sex'];
         $data['head_pic'] = $user_info['headimgurl'];
+        $data['nickname']          = urlencode ($user_info['nickname']);*/
         $data['openid'] = $openid;
-        $data['create_time'] = $user_info['subscribe_time'];
-        $data['nickname']          = urlencode ($user_info['nickname']);
+        $data['create_time'] = time();
         $condition['openid'] = $openid;
         $rs = $this -> user -> getOneByCondition($condition);
         if ($rs) {
