@@ -87,9 +87,12 @@ class CI_Wechat_user extends CI_Wechat_common {
      * @注意：unionid字段 只有在粉丝将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
     public function getUserInfo($openid) {
+        info_log($openid);
+        info_log('进来了没有呢');
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        info_log('我就看看是不是这儿');
         $result = $this->http_get(self::API_URL_PREFIX . self::USER_INFO_URL . 'access_token=' . $this->access_token . '&openid=' . $openid);
         if ($result) {
             $json = json_decode($result, true);
