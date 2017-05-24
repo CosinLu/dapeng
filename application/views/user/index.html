@@ -42,7 +42,7 @@
                             <td style="text-align: center;">{%date('Y-m-d H:i:s',$data.create_time)%}</td>
                             <td style="text-align: center;">{%if $data.status != 2%}暂无{%else%}{%date('Y-m-d H:i:s',$data.close_time)%}{%/if%}</td>
                             <td style="text-align: center;">{%replace_user_status($data.status)%}</td>
-                            <td style="text-align: center;">{%if $data.status == 2%}<button data-id="{%$data.id%}" data-url="/user/opera_status" class="btn btn-mini cancel_dis">取消禁用</button>{%else%}<button data-id="{%$data.id%}" data-url="/user/opera_status" class="btn btn-danger dis_user">禁用</button>{%/if%}</td>
+                            <td style="text-align: center;">{%if $data.status == 2%}<button data-id="{%$data.id%}" data-url="/user/opera_status" class="btn btn-success cancel_dis">取消禁用</button>{%else%}<button data-id="{%$data.id%}" data-url="/user/opera_status" class="btn btn-danger dis_user">禁用</button>{%/if%}</td>
                         </tr>
                         {%/foreach%}
                         </tbody>
@@ -53,10 +53,31 @@
     </div>
 {%include file="../public/bottom.html"%}
     <script>
-        $('.add_code').on('click',function(){
+        $('.dis_user').on('click',function(){
             var url = $(this).data('url');
+            var id = $(this).data('id');
             $.ajax({
                 url : url,
+                data:{'id':id,'action':'dis'},
+                type: 'post',
+                dataType:'json',
+                success:function(result){
+                    if(result.code !== 200){
+                        alert(result.message);
+                        return;
+                    }else{
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+        $('.cancel_dis').on('click',function(){
+            var url = $(this).data('url');
+            var id = $(this).data('id');
+            $.ajax({
+                url : url,
+                data:{'id':id,'action':'cancel'},
                 type: 'post',
                 dataType:'json',
                 success:function(result){
