@@ -90,6 +90,7 @@ class Wechat extends MY_Controller {
         if (empty($openid)) {
             return false;
         }
+        $this->wechat_receive->text("您的消息已经收到。")->reply();
         /*$user_info = $this -> wechat_user -> getUserInfo($openid);
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
