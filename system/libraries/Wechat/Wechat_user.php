@@ -58,6 +58,10 @@ class CI_Wechat_user extends CI_Wechat_common {
     /* 批量取消拉黑粉丝 */
     const BACKLIST_DEL_URL = '/tags/members/batchunblacklist?';
 
+    public function __construct($options) {
+        parent::__construct($options);
+    }
+
     /**
      * 批量获取关注粉丝列表
      * @param type $next_openid
