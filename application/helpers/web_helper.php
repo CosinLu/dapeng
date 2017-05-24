@@ -73,3 +73,9 @@
             return false;
         }
     }
+
+
+    function replace_user_status($status){
+        $arr = array(0=>'关注',1=>'查询',2=>'禁用',3=>'取关');
+        return $arr[$status];
+    }
