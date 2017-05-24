@@ -200,4 +200,11 @@ class CI_Model {
         return $data;
     }
 
+    public function getNumberByCondition($condition)
+    {
+        $this->setCondition($condition);
+        $num = $this->db->count_all_results($this->table);
+        return $num;
+    }
+
 }
