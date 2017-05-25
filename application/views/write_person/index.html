@@ -1,0 +1,118 @@
+{%include file="../public/top.html"%}
+
+<div id="content-header">
+    <h1>书写人管理</h1>
+    <div class="btn-group">
+        <button class="btn btn-primary btn-large add_person" data-url="/write_person/add_person">添加书写人</button>
+    </div>
+</div>
+<div id="breadcrumb">
+    <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a>
+    <a href="#" class="current">书写人管理</a>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                    <h5>书写人列表</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th style="color: red;">ID</th>
+                            <th style="color: red;">书写人</th>
+                            <th style="color: red;">状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {%foreach from=$datas item=data%}
+                        <tr>
+                            <td style="text-align: center;">{%$data.id%}</td>
+                            <td style="text-align: center;">{%$data.name%}</td>
+                            <td style="text-align: center;">
+                                {%if $data.status == 0%}
+                                    <button data-id="{%$data.id%}" data-url="/write_person/opera_status" class="btn btn-success dis_status">
+                                        禁用
+                                    </button>
+                                {%else%}
+                                    <button data-id="{%$data.id%}" data-url="/write_person/opera_status" class="btn btn-danger cancel_dis">
+                                        取消禁用
+                                    </button>
+                                {%/if%}</td>
+                        </tr>
+                        {%/foreach%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%include file="../public/bottom.html"%}
+    <script>
+        $('.add_person').on('click',function(){
+            var name = prompt('请输入书写人名称','');
+            if(name != null || name != ''){
+                var url = $(this).data('url');
+                $.ajax({
+                    url : url,
+                    data:{'name':name},
+                    type: 'post',
+                    dataType:'json',
+                    success:function(result){
+                        if(result.code !== 200){
+                            alert(result.message);
+                            return;
+                        }else{
+                            alert(result.message);
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+
+        $('.dis_status').on('click',function(){
+            var url = $(this).data('url');
+            var id = $(this).data('id');
+            $.ajax({
+                url : url,
+                data:{'id':id,'action':'dis'},
+                type: 'post',
+                dataType:'json',
+                success:function(result){
+                    if(result.code !== 200){
+                        alert(result.message);
+                        return;
+                    }else{
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+        $('.cancel_dis').on('click',function(){
+            var url = $(this).data('url');
+            var id = $(this).data('id');
+            $.ajax({
+                url : url,
+                data:{'id':id,'action':'cancel'},
+                type: 'post',
+                dataType:'json',
+                success:function(result){
+                    if(result.code !== 200){
+                        alert(result.message);
+                        return;
+                    }else{
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    </script>
