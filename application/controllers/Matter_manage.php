@@ -11,7 +11,9 @@ class Matter_manage extends MY_Controller {
 
     public function index()
     {
-    	echo 111;die;
+        $condition['status !='] = 0;
+        $datas = $this -> matter -> getAllByCondition($condition);
+        $this -> assign('datas',$datas);
         $this -> display('matter_manage/index.html');
     }
 }
