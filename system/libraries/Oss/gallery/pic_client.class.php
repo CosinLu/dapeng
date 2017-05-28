@@ -13,7 +13,7 @@ class PicClient
 
 	public function __construct()
 	{
-		$this->_bucket = 'bowertest';
+		$this->_bucket = 'cosinlu';
 
 		$this->_ossServer = new ALIOSS();
 

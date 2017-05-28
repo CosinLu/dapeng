@@ -30,7 +30,7 @@ if(file_exists(OSS_API_PATH.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.ALI_L
 define('OSS_NAME','oss-sdk-php');
 define('OSS_VERSION','1.1.6');
 define('OSS_BUILD','201210121010245');
-define('OSS_AUTHOR', 'xiaobing.meng@alibaba-inc.com');
+define('OSS_AUTHOR', 'cosin_lu@163.com');
 
 // EXCEPTIONS
 
