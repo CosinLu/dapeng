@@ -24,4 +24,30 @@ class Matter_manage extends MY_Controller {
         $this -> assign('write_person_datas',$write_person_datas);
         $this -> display('matter_manage/add_matter.html');
     }
+
+    public function upload(){
+        if ($_FILES['file'])
+        {
+            $filePath = $_FILES['file']['tmp_name'];
+            $fileName = md5($_FILES['file']['name'] . time());
+            $fileSize = $_FILES["file"]["size"];
+
+            $photoSize   = getimagesize($_FILES['file']['tmp_name']);
+
+            $paramter['width']  = $photoSize[0];
+            $paramter['height'] = $photoSize[1];
+
+            if (!empty($filePath))
+            {
+                $this -> load -> library('oss');
+                $response = $this->oss->uploadFile($filePath, $fileName);
+                dd($response);
+                if ($response)
+                {
+                    $paramter['url'] = $this->config->item('pic_server_url').$response;
+                    $paramter['createline'] = time();
+                }
+            }
+        }
+    }
 }
