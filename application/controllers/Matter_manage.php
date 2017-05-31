@@ -25,29 +25,32 @@ class Matter_manage extends MY_Controller {
         $this -> display('matter_manage/add_matter.html');
     }
 
-    public function upload(){
-        if ($_FILES['file'])
+    public function do_add_matter(){
+        if ($_FILES['img_path'])
         {
-            $filePath = $_FILES['file']['tmp_name'];
-            $fileName = md5($_FILES['file']['name'] . time());
-            $fileSize = $_FILES["file"]["size"];
-
-            $photoSize   = getimagesize($_FILES['file']['tmp_name']);
-
-            $paramter['width']  = $photoSize[0];
-            $paramter['height'] = $photoSize[1];
+            $filePath = $_FILES['img_path']['tmp_name'];
+            $suf_name = explode('.',$_FILES['img_path']['name']);
+            $fileName = md5($_FILES['img_path']['name'] . time()).'.'.$suf_name[1];
 
             if (!empty($filePath))
             {
-                $this -> load -> library('oss');
-                $response = $this->oss->uploadFile($filePath, $fileName);
+                $this->load->library('oss/alioss');
+                $response = $this -> alioss -> upload_file_by_file('cosinlu',$fileName,$filePath);
                 dd($response);
-                if ($response)
+                if ($response['status'] == 200)
                 {
-                    $paramter['url'] = $this->config->item('pic_server_url').$response;
+                    $paramter['url'] = $this->config->item('pic_server_url').$fileName;
                     $paramter['createline'] = time();
                 }
             }
         }
+        $a =
+        dd($a);
+    }
+
+    public function test_oss(){
+        $this->load->library('oss/alioss');
+        $a = $this -> alioss -> get_sign_url('cosinlu','f972b8f1db191df4c6428582a2ad4cf2.jpg');
+        echo "<img src='{$a}' />";
     }
 }
