@@ -216,6 +216,18 @@ class Matter_manage extends MY_Controller {
         }
     }
 
+    public function can_search(){
+        $id = $this -> getParams('id');
+        $result = array('code' => 500,'message'=>'操作失败');
+        $status = $this -> getParams('status');
+        $data['status'] = $status;
+        $res = $this -> matter -> update($id,$data);
+        if($res)
+            $result = array('code' => 200,'message'=>'操作成功');
+        echo json_encode($result);
+        exit;
+    }
+
     public function test_oss(){
         $this->load->library('oss/alioss');
         $a = $this -> alioss -> get_sign_url('cosinlu','f972b8f1db191df4c6428582a2ad4cf2.jpg');

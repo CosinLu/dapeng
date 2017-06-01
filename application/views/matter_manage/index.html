@@ -25,13 +25,14 @@
                         {%foreach from=$datas item=data%}
                             <li class="span2">
                                 <a href="javascript:void(0)" class="thumbnail">
-                                    <img src="{%$data.img_path%}" alt="" />
+                                    <img src="{%$data.img_path%}" style="width: 150px;height:200px;" />
                                 </a>
                                 <div class="actions">
                                     <a title="编辑" href="/matter_manage/update_matter?id={%$data.id%}"><i class="icon-pencil icon-white inselected"></i></a>
+                                    <a data-url="/matter_manage/can_search" class="can_search" data-status="{%$data.status%}" data-id="{%$data.id%}" href="javascript:void(0)"><i class="icon-ok icon-white" title="是否可以搜索"></i></a>
                                     <a data-url="/matter_manage/del_matter" class="del_matter" data-id="{%$data.id%}" href="javascript:void(0)"><i class="icon-remove icon-white" title="删除"></i></a>
                                 </div>
-                                <p style="text-align: center;color: red;font-size: 20px;padding-top: 10px;">{%$data.field_name%}</p>
+                                <p style="text-align: center;color: red;font-size: 20px;padding-top: 10px;">{%$data.field_name%} {%if $data.status eq 2%}(可搜索){%/if%}</p>
                             </li>
                         {%/foreach%}
                     </ul>
@@ -48,6 +49,33 @@
                 $.ajax({
                     url : url,
                     data:{'id':id},
+                    type: 'post',
+                    dataType:'json',
+                    success:function(result){
+                        if(result.code !== 200){
+                            alert(result.message);
+                            return;
+                        }else{
+                            alert(result.message);
+                            window.location.reload();
+                        }
+                    }
+                });
+            }else{
+                return;
+            }
+        });
+
+        $('.can_search').on('click',function(){
+            var id = $(this).data('id');
+            var url = $(this).data('url');
+            var status = $(this).data('status');
+            status =  status == 1 ? 2 : 1;
+            if(confirm('是否设置搜索选项?')){
+                $.ajax({
+                    url : url,
+                    data:{'id':id,
+                          'status':status},
                     type: 'post',
                     dataType:'json',
                     success:function(result){
