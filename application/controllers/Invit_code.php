@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//邀请码控制器
 class Invit_code extends MY_Controller {
 
     public function __construct()

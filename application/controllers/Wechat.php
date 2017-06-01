@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//微信公众号相关控制器
 class Wechat extends MY_Controller {
 
 	public function __construct() {
@@ -30,6 +31,8 @@ class Wechat extends MY_Controller {
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
             case common::MSGTYPE_TEXT:
+                $msg = $this -> wechat_receive -> getRevContent();
+                $this -> _do_msg_text($openid,$msg);
                 exit();
                 break;
             case common::MSGTYPE_EVENT:
@@ -37,12 +40,10 @@ class Wechat extends MY_Controller {
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
-                        info_log('关注');
                         $this->_subscribe ($openid);
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
-                        info_log('取消关注');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
@@ -106,6 +107,10 @@ class Wechat extends MY_Controller {
         $condition['openid'] = $openid;
         $rs = $this -> user -> getOneByCondition($condition);
         if ($rs) {
+            $this -> load -> model('Invit_code_model','code');
+            $code_info = $this -> code -> getOneByCondition(array('uid'=>$rs['id']));
+            if($code_info)
+                $data['status'] = 1;
             $res = $this -> user -> updateByCondition($condition,$data);
         } else {
             $res = $this -> user -> insert($data);
@@ -131,5 +136,49 @@ class Wechat extends MY_Controller {
         return $res;
     }
 
+    //接收用户发送来的消息判断是否要激活
+    private function _do_msg_text($openid = '',$msg = ''){
+	    $user_condition['openid'] = $openid;
+	    $user_info = $this -> user -> getOneByCondition($user_condition);
+        $this -> load -> model('Invit_code_model','code');
+        $code_condition['code'] = $msg;
+        $code_info = $this -> code -> getOneByCondition($code_condition);
+	    if(!empty($code_info)){
+            if($user_info['status'] == 1){
+                $this->wechat_receive->text("您已激活成功,无需再次发送激活码。")->reply();
+            }elseif($user_info['status'] == 0 && !empty($code_info['uid'])){
+                $this->wechat_receive->text("此激活码已使用。")->reply();
+            }elseif($user_info['status'] == 2){
+                $this->wechat_receive->text("您已被禁用,无法发送激活码。")->reply();
+            }else{
+                $where = ['openid' => $openid];
+                $data = ['status' => 1];
+                $res   = $this -> user -> updateByCondition($where,$data);
+                $c_cond['uid'] = $user_info['id'];
+                $c_code['id'] = $code_info['id'];
+                $this -> code -> updateByCondition($c_code,$c_cond);
+                if($res)
+                    $this->wechat_receive->text("恭喜您,您已激活成功。")->reply();
+            }
+        }else{
+            $this -> load -> model('Matter_manage_model','matter');
+            $this -> load -> library('oss/alioss');
+            $matter_condition['field_name'] = $msg;
+            $matter_info = $this -> matter -> getOneByCondition($matter_condition);
+            if(!empty($matter_info)){
+                if($user_info['status'] == 1){
+                    $send_data['Title'] = $matter_info['field_name'];
+                    $send_data['Description'] = $matter_info['description'];
+                    $send_data['PicUrl'] = $this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']);
+                    $send_data['Url'] = 'baidu.com';
+                    $this->wechat_receive->news($send_data)->reply();
+                }else{
+                    $this->wechat_receive->text("对不起,您目前还没有权限搜索关键字。")->reply();
+                }
+            }else{
+                $this->wechat_receive->text("对不起,系统目前无法识别您发送的消息,后续功能会逐步完善,敬请期待哦。")->reply();
+            }
+        }
+    }
    
 }
