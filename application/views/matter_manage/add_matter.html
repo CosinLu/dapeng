@@ -43,21 +43,22 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">字体GIF图</label>
-                                        <div class="controls">
-                                            <input name="gif_path" type="file" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
                                         <label class="control-label">描述</label>
                                         <div class="controls">
                                             <textarea name="description"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
+                                        <label class="control-label">字体GIF图</label>
+                                        <div class="controls">
+                                            <input name="gif_path" type="file" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <label class="control-label">坐标</label>
                                         <div class="controls input-medium">
-                                            <input type="text" name="coord[]" />
+                                            <input type="text" name="coord[]" placeholder="x,y坐标用,分割" />
+                                            <button type="button" class="btn btn-info btn-mini clone_btn">添加坐标点</button>
                                         </div>
                                     </div>
                                     <div class="form-actions">
@@ -69,31 +70,15 @@
         </div>
     </div>
     {%include file="../public/bottom.html"%}
-    <!-- <script>
-        $("input[name='img_path']").on('change',function(){
-            var img_path = $(this).val();
-            var url = $(this).data('url');
-            if(img_path != '' || img_path != null){
-                $.ajax({
-                    url : url,
-                    type: 'post',
-                    data:{
-                        img_path:img_path
-                    },
-                    dataType:'json',
-                    success:function(result){
-                        if(result.code !== 200){
-                            alert(result.message);
-                            return;
-                        }else{
-                            alert(result.message);
-                            $(this).val(result.data);
-                            var img_html = "<img src='"+result.data+"' />";
-                            $(this).append(img_html);
-                        }
-                    }
-                });
-            }
+    <script>
+        $(".clone_btn").click(function(){
+            var clone_htm = "<input type='text' name='coord[]' placeholder='x,y坐标用,分割' /><button class='btn btn-info btn-mini del_btn' type='button'>删除坐标点</button>";
+            $(this).after(clone_htm);
+            // $(this).append($(this).prev('input').clone(true));
         });
-    </script> -->
+        $(document).on('click','.del_btn',function(){
+            $(this).prev('input').remove();
+            $(this).remove();
+        });
+    </script>
 
