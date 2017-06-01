@@ -24,8 +24,8 @@ class Wechat extends MY_Controller {
 	}
 	
 	public function index(){
-	    $this -> wechat_receive -> valid();
-        /*$type   = $this -> wechat_receive -> getRev ()
+//	    $this -> wechat_receive -> valid();
+        $type   = $this -> wechat_receive -> getRev ()
             ->getRevType ();
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
@@ -54,7 +54,7 @@ class Wechat extends MY_Controller {
             default:
                 $this->_subscribe ($openid);
                 exit();
-        }*/
+        }
 	}
 
     public function valid()
