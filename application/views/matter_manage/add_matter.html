@@ -2,13 +2,10 @@
 
 <div id="content-header">
     <h1>素材管理</h1>
-    <div class="btn-group">
-        <a class="btn btn-primary btn-large" href="/matter_manage/add_matter">添加素材</a>
-    </div>
 </div>
 <div id="breadcrumb">
-    <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a>
-    <a href="#" class="current">素材管理</a>
+    <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 素材管理</a>
+    <a href="#" class="current">添加素材</a>
 </div>
 <div class="container-fluid">
     <div class="row-fluid">
@@ -24,45 +21,43 @@
                                 <form action="/matter_manage/test" method="post" class="form-horizontal" enctype="multipart/form-data" />
                                     <div class="control-group">
                                         <label class="control-label">字</label>
+                                        <div class="controls input-small">
+                                            <input type="text" name="field_name" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="control-group">
+                                        <label class="control-label">书写人</label>
                                         <div class="controls">
-                                            <input type="text" />
+                                            <select name="w_id">
+                                                {%foreach from=$write_person_datas item=person%}
+                                                    <option value="{%$person.id%}">{%$person.name%}</option>
+                                                {%/foreach%}
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Password input</label>
+                                        <label class="control-label">字体图</label>
                                         <div class="controls">
-                                            <input type="password" />
+                                            <input name="img_path" data-url="/matter_manage/file_upload" type="file" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Input with description</label>
-                                        <div class="controls">
-                                            <input type="text" />
-                                            <span class="help-block">This is a description</span>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Input with placeholder</label>
-                                        <div class="controls">
-                                            <input type="text" placeholder="This is a placeholder..." />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Normal textarea</label>
-                                        <div class="controls">
-                                            <textarea></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">File upload input</label>
-                                        <div class="controls">
-                                            <input name="img_path" type="file" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">File upload input</label>
+                                        <label class="control-label">字体GIF图</label>
                                         <div class="controls">
                                             <input name="gif_path" type="file" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">描述</label>
+                                        <div class="controls">
+                                            <textarea name="description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">坐标</label>
+                                        <div class="controls input-medium">
+                                            <input type="text" name="coord[]" />
                                         </div>
                                     </div>
                                     <div class="form-actions">
@@ -74,3 +69,31 @@
         </div>
     </div>
     {%include file="../public/bottom.html"%}
+    <script>
+        $("input[name='img_path']").on('change',function(){
+            var img_path = $(this).val();
+            var url = $(this).data('url');
+            if(img_path != '' || img_path != null){
+                $.ajax({
+                    url : url,
+                    type: 'post',
+                    data:{
+                        img_path:img_path
+                    },
+                    dataType:'json',
+                    success:function(result){
+                        if(result.code !== 200){
+                            alert(result.message);
+                            return;
+                        }else{
+                            alert(result.message);
+                            $(this).val(result.data);
+                            var img_html = "<img src='"+result.data+"' />";
+                            $(this).append(img_html);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
