@@ -28,36 +28,40 @@ class Matter_manage extends MY_Controller {
     public function do_add_matter(){
         $field_name = $this -> getParams('field_name');
         if(empty($field_name)){
-            echo "<script>alert('字不能为空')</script>";
-            redirect('/matter_manage/index');
+            echo "<script>alert('字不能为空');
+            window.location.href='/matter_manage/index';
+            </script>";
+            exit;
         }
         $params['field_name'] = $field_name;
         $description = $this -> getParams('description');
         if(empty($description)){
-            echo "<script>alert('描述不能为空')</script>";
-            redirect('/matter_manage/index');
+            echo "<script>alert('描述不能为空');
+            window.location.href='/matter_manage/index';</script>";
+            exit;
         }
         $params['description'] = $description;
+        $params['w_id'] = $this -> getParams('w_id');
         if ($_FILES['img_path']){
             $file_path = $_FILES['img_path']['tmp_name'];
             $suf_name = explode('.',$_FILES['img_path']['name']);
             $file_name = md5($_FILES['img_path']['name'] . time()).'.'.$suf_name[1];
-
-            if (!empty($file_path))
-            {
+            info_log($file_path.'111');
+            if (!empty($file_path)){
                 $this->load->library('oss/alioss');
                 $response = $this -> alioss -> upload_file_by_file($this -> bucket,$file_name,$file_path);
-                if ($response['status'] == 200)
+                if ($response->status == 200)
                 {
-                    $img_path = $this -> alioss -> get_sign_url($this -> bucket,$file_name);
-                    $params['img_path'] = $img_path;
+                    $params['img_path'] = $file_name;
                 }else{
-                    echo "<script>alert('图片上传失败')</script>";
-                    redirect('/matter_manage/index');
+                    echo "<script>alert('图片上传失败');
+            window.location.href='/matter_manage/index';</script>";
+                    exit;
                 }
             }else{
-                echo "<script>alert('图片不能为空')</script>";
-                redirect('/matter_manage/index');
+                echo "<script>alert('图片不能为空');
+            window.location.href='/matter_manage/index';</script>";
+                exit;
             }
         }
 
@@ -65,80 +69,43 @@ class Matter_manage extends MY_Controller {
             $filePath = $_FILES['gif_path']['tmp_name'];
             $sufName = explode('.',$_FILES['gif_path']['name']);
             $fileName = md5($_FILES['gif_path']['name'] . time()).'.'.$sufName[1];
-
+            info_log($filePath.'222');
             if (!empty($filePath)){
                 $this->load->library('oss/alioss');
                 $response = $this -> alioss -> upload_file_by_file($this -> bucket,$fileName,$filePath);
-                if ($response['status'] == 200){
-                    $imgPath = $this -> alioss -> get_sign_url($this -> bucket,$file_name);
-                    $params['gif_path'] = $imgPath;
+                if ($response->status == 200){
+                    $params['gif_path'] = $fileName;
                 }else{
-                    echo "<script>alert('gif图上传失败')</script>";
-                    redirect('/matter_manage/index');
+                    echo "<script>alert('gif图上传失败');
+            window.location.href='/matter_manage/index';</script>";
+                exit;
                 }
             }else{
-                echo "<script>alert('gif图不能为空')</script>";
-                redirect('/matter_manage/index');
+                echo "<script>alert('gif图不能为空');
+            window.location.href='/matter_manage/index';</script>";
+                exit;
             }
         }
-
+        $coord = $this -> getParams('coord');
+        if(empty($coord)){
+            echo "<script>alert('坐标不能为空');
+            window.location.href='/matter_manage/index';
+            </script>";
+            exit;
+        }
+        $params['coord'] = json_encode($coord);
         $res = $this -> matter -> insert($params);
         if($res){
-            echo "<script>alert('添加成功')</script>";
-            redirect('/matter_manage/index');
+            echo "<script>alert('添加成功');
+            window.location.href='/matter_manage/index';</script>";
+            exit;
         }else{
-            echo "<script>alert('添加失败')</script>";
-            redirect('/matter_manage/index');
+            echo "<script>alert('添加失败');
+            window.location.href='/matter_manage/index';</script>";
+            exit;
         }
     }
 
-    public function file_upload(){
-        if ($_FILES['img_path']){
-            $file_path = $_FILES['img_path']['tmp_name'];
-            $suf_name = explode('.',$_FILES['img_path']['name']);
-            $file_name = md5($_FILES['img_path']['name'] . time()).'.'.$suf_name[1];
-
-            if (!empty($file_path))
-            {
-                $this->load->library('oss/alioss');
-                $response = $this -> alioss -> upload_file_by_file($this -> bucket,$file_name,$file_path);
-                if ($response['status'] == 200)
-                {
-                    $img_path = $this -> alioss -> get_sign_url($this -> bucket,$file_name);
-                    $result = array('code' => 200,'message'=>'成功','data'=>$img_path);
-                    echo json_encode($result);exit;
-                }else{
-                    $result = array('code' => 500,'message'=>'失败');
-                    echo json_encode($result);exit;
-                }
-            }else{
-                $result = array('code' => 500,'message'=>'失败');
-                echo json_encode($result);exit;
-            }
-        }
-
-        if ($_FILES['gif_path']){
-            $filePath = $_FILES['gif_path']['tmp_name'];
-            $sufName = explode('.',$_FILES['gif_path']['name']);
-            $fileName = md5($_FILES['gif_path']['name'] . time()).'.'.$sufName[1];
-
-            if (!empty($filePath)){
-                $this->load->library('oss/alioss');
-                $response = $this -> alioss -> upload_file_by_file($this -> bucket,$fileName,$filePath);
-                if ($response['status'] == 200){
-                    $imgPath = $this -> alioss -> get_sign_url($this -> bucket,$file_name);
-                    $result = array('code' => 200,'message'=>'成功','data'=>$imgPath);
-                    echo json_encode($result);exit;
-                }else{
-                    $result = array('code' => 500,'message'=>'失败');
-                    echo json_encode($result);exit;
-                }
-            }else{
-                $result = array('code' => 500,'message'=>'失败');
-                echo json_encode($result);exit;
-            }
-        }
-    }
 
     public function test_oss(){
         $this->load->library('oss/alioss');
