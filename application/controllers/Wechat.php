@@ -164,6 +164,7 @@ class Wechat extends MY_Controller {
             $this -> load -> model('Matter_manage_model','matter');
             $this -> load -> library('oss/alioss');
             $matter_condition['field_name'] = $msg;
+            info_log($msg);
             $matter_info = $this -> matter -> getOneByCondition($matter_condition);
             if(!empty($matter_info)){
                 if($user_info['status'] == 1){
