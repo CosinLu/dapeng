@@ -167,10 +167,16 @@ class Wechat extends MY_Controller {
             $matter_info = $this -> matter -> getOneByCondition($matter_condition);
             if(!empty($matter_info)){
                 if($user_info['status'] == 1){
-                    $send_data['Title'] = $matter_info['field_name'];
+                    /*$send_data['Title'] = $matter_info['field_name'];
                     $send_data['Description'] = $matter_info['description'];
                     $send_data['PicUrl'] = $this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']);
-                    $send_data['Url'] = 'baidu.com';
+                    $send_data['Url'] = 'baidu.com';*/
+                    $send_data = array(
+                        'Title'=>$matter_info['field_name'],
+                   		'Description'=>$matter_info['description'],
+                   		'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
+                   		'Url'=>'http://www.baidu.com'
+                    );
                     $this->wechat_receive->news($send_data)->reply();
                 }else{
                     $this->wechat_receive->text("对不起,您目前还没有权限搜索关键字。")->reply();
