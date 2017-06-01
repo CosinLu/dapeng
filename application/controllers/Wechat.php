@@ -32,7 +32,6 @@ class Wechat extends MY_Controller {
         switch ($type) {
             case common::MSGTYPE_TEXT:
                 $msg = $this -> wechat_receive -> getRevContent();
-                info_log('in_the_before'.$msg);
                 $this -> _do_msg_text($openid,$msg);
                 exit();
                 break;
@@ -139,14 +138,12 @@ class Wechat extends MY_Controller {
 
     //接收用户发送来的消息判断是否要激活
     private function _do_msg_text($openid = '',$msg = ''){
-	    info_log('in'.$msg);
 	    $user_condition['openid'] = $openid;
 	    $user_info = $this -> user -> getOneByCondition($user_condition);
         $this -> load -> model('Invit_code_model','code');
         $code_condition['code'] = $msg;
         $code_info = $this -> code -> getOneByCondition($code_condition);
 	    if(!empty($code_info)){
-	        info_log('is_code???');
             if($user_info['status'] == 1){
                 $this->wechat_receive->text("您已激活成功,无需再次发送激活码。")->reply();
             }elseif($user_info['status'] == 0 && !empty($code_info['uid'])){
@@ -164,25 +161,24 @@ class Wechat extends MY_Controller {
                     $this->wechat_receive->text("恭喜您,您已激活成功。")->reply();
             }
         }else{
-	        info_log('is_text???');
             $this -> load -> model('Matter_manage_model','matter');
             $this -> load -> library('oss/alioss');
             $matter_condition['field_name'] = $msg;
             $matter_info = $this -> matter -> getOneByCondition($matter_condition);
             if(!empty($matter_info)){
-                info_log('is_in_the_???');
                 if($user_info['status'] == 1){
                     /*$send_data['Title'] = $matter_info['field_name'];
                     $send_data['Description'] = $matter_info['description'];
                     $send_data['PicUrl'] = $this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']);
                     $send_data['Url'] = 'baidu.com';*/
                     $send_data = array(
-                        'Title'=>$matter_info['field_name'],
-                   		'Description'=>$matter_info['description'],
-                   		'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
-                   		'Url'=>'http://www.baidu.com'
+                        '0'=>array(
+                            'Title'=>$matter_info['field_name'],
+                            'Description'=>$matter_info['description'],
+                            'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
+                            'Url'=>'http://www.baidu.com'
+                        )
                     );
-                    info_log(json_encode($send_data));
                     $this->wechat_receive->news($send_data)->reply();
                 }else{
                     $this->wechat_receive->text("对不起,您目前还没有权限搜索关键字。")->reply();
