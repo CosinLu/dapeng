@@ -177,8 +177,7 @@ class Wechat extends MY_Controller {
                    		'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
                    		'Url'=>'http://www.baidu.com'
                     );
-                    $this->wechat_receive->text($matter_info)->reply();
-//                    $this->wechat_receive->news($send_data)->reply();
+                    $this->wechat_receive->news($send_data)->reply();
                 }else{
                     $this->wechat_receive->text("对不起,您目前还没有权限搜索关键字。")->reply();
                 }
