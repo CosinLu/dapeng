@@ -24,7 +24,8 @@ class Wechat extends MY_Controller {
 	}
 	
 	public function index(){
-        $type   = $this -> wechat_receive -> getRev ()
+	    $this -> wechat_receive -> valid();
+        /*$type   = $this -> wechat_receive -> getRev ()
             ->getRevType ();
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
@@ -53,7 +54,7 @@ class Wechat extends MY_Controller {
             default:
                 $this->_subscribe ($openid);
                 exit();
-        }
+        }*/
 	}
 
     public function valid()
@@ -91,7 +92,7 @@ class Wechat extends MY_Controller {
         if (empty($openid)) {
             return false;
         }
-        $this->wechat_receive->text("您的消息已经收到。")->reply();
+        $this->wechat_receive->text("感谢您的关注,您的支持就是我们最大的动力。")->reply();
         /*$user_info = $this -> wechat_user -> getUserInfo($openid);
         $data['city'] = $user_info['city'];
         $data['province'] = $user_info['province'];
