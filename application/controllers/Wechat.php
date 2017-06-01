@@ -170,6 +170,7 @@ class Wechat extends MY_Controller {
             $matter_condition['field_name'] = $msg;
             $matter_info = $this -> matter -> getOneByCondition($matter_condition);
             if(!empty($matter_info)){
+                info_log('is_in_the_???');
                 if($user_info['status'] == 1){
                     /*$send_data['Title'] = $matter_info['field_name'];
                     $send_data['Description'] = $matter_info['description'];
