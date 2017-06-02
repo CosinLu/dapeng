@@ -39,4 +39,12 @@ class Home extends CI_Controller {
     	$this->session->unset_userdata($sess_data);
     	redirect('/home/index');
     }
+
+    public function h5_doc(){
+        $id = $this -> input -> get('id');
+        if(!is_numeric($id) || $id < 1){
+            exit('抱歉,数据错误');
+        }
+        $this -> smarty -> display('home/h5_doc.html');
+    }
 }
