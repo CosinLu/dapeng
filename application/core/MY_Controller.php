@@ -10,7 +10,7 @@ class MY_Controller extends CI_Controller {
     {
         parent::__construct();
         include_once APPPATH.'config/common.php';
-
+        $this -> check_login();
     }
 
     /**
@@ -44,5 +44,18 @@ class MY_Controller extends CI_Controller {
     public function display($html)
     {
         $this->smarty->display($html);
+    }
+
+    private function check_login(){
+        $name = $this -> session -> name;
+        $id = $this -> session -> id;
+        if(empty($name) && empty($id)){
+            redirect('/home/index');
+            exit;
+        }else{
+            $sess_data['name'] = $name;
+            $sess_data['id'] = $id;
+            $this -> assign('sess_data',$sess_data);
+        }
     }
 }
