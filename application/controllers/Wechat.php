@@ -180,7 +180,7 @@ class Wechat extends CI_Controller {
                     $send_data = array(
                         '0'=>array(
                             'Title'=>$matter_info['field_name'],
-                            'Description'=>$matter_info['description'],
+                            'Description'=>'',
                             'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
                             'Url'=>'http://www.baidu.com'
                         )
