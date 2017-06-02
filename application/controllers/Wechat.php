@@ -31,6 +31,7 @@ class Wechat extends CI_Controller {
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
             case common::MSGTYPE_TEXT:
+                info_log('消息');
                 $msg = $this -> wechat_receive -> getRevContent();
                 $this -> _do_msg_text($openid,$msg);
                 exit();
@@ -40,19 +41,23 @@ class Wechat extends CI_Controller {
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
+                        info_log('关注1');
                         $this->_subscribe ($openid);
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
+                        info_log('取关');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
                     default:
+                        info_log('关注2');
                         $this->_subscribe ($openid);
                         exit();
                 }
                 break;
             default:
+                info_log('关注3');
                 $this->_subscribe ($openid);
                 exit();
         }
