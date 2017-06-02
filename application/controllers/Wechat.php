@@ -21,7 +21,7 @@ class Wechat extends CI_Controller {
         $this -> load -> library('Wechat/Wechat_receive',$config);
         $this -> load -> library('Wechat/Wechat_user',$config);
         $this -> load -> model('User_model','user');
-		
+        include_once APPPATH.'config/common.php';
 	}
 	
 	public function index(){
@@ -31,7 +31,6 @@ class Wechat extends CI_Controller {
         $openid = $this -> wechat_receive -> getRevFrom ();
         switch ($type) {
             case common::MSGTYPE_TEXT:
-                info_log('消息');
                 $msg = $this -> wechat_receive -> getRevContent();
                 $this -> _do_msg_text($openid,$msg);
                 exit();
@@ -41,23 +40,19 @@ class Wechat extends CI_Controller {
                 $event = isset($event['event']) ? $event['event'] : $event['EventKey'];
                 switch ($event) {
                     case common::EVENT_SUBSCRIBE:
-                        info_log('关注1');
                         $this->_subscribe ($openid);
                         exit();
                         break;
                     case common::EVENT_UNSUBSCRIBE:
-                        info_log('取关');
                         $this->_unsubscribe ($openid);
                         exit();
                         break;
                     default:
-                        info_log('关注2');
                         $this->_subscribe ($openid);
                         exit();
                 }
                 break;
             default:
-                info_log('关注3');
                 $this->_subscribe ($openid);
                 exit();
         }
@@ -145,14 +140,14 @@ class Wechat extends CI_Controller {
     private function _do_msg_text($openid = '',$msg = ''){
 	    $user_condition['openid'] = $openid;
 	    $user_info = $this -> user -> getOneByCondition($user_condition);
-        /*if(!$user_info){
+        if(!$user_info){
             $data['openid'] = $openid;
             $data['create_time'] = time();
             $data['status'] = 0;
             $data['nickname'] = '微信用户'.time();
             $user_id = $this -> user -> insert($data);
             $user_info = $this -> user -> getOne($user_id);
-        }*/
+        }
         $this -> load -> model('Invit_code_model','code');
         $code_condition['code'] = $msg;
         $code_info = $this -> code -> getOneByCondition($code_condition);
