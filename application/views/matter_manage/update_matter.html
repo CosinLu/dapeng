@@ -45,7 +45,7 @@
                         <div class="control-group">
                             <label class="control-label">描述</label>
                             <div class="controls">
-                                <textarea name="description">{%$info.description%}</textarea>
+                                <script id="container" name="description" style="width:750px;height:240px;" type="text/plain">{%$info.description%}</script>
                             </div>
                         </div>
                         <div class="control-group">
@@ -73,6 +73,14 @@
         </div>
     </div>
     {%include file="../public/bottom.html"%}
+    <script type="text/javascript" src="/static/js/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="/static/js/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="/static/js/lang/zh-cn/zh-cn.js"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('container');
+    </script>
     <script>
         $(".clone_btn").click(function(){
             var clone_htm = "<input type='text' name='coord[]' placeholder='x,y坐标用,分割' /><button class='btn btn-info btn-mini del_btn' type='button'>删除坐标点</button>";
