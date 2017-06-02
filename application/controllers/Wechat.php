@@ -140,14 +140,14 @@ class Wechat extends CI_Controller {
     private function _do_msg_text($openid = '',$msg = ''){
 	    $user_condition['openid'] = $openid;
 	    $user_info = $this -> user -> getOneByCondition($user_condition);
-        if(!$user_info){
+        /*if(!$user_info){
             $data['openid'] = $openid;
             $data['create_time'] = time();
             $data['status'] = 0;
             $data['nickname'] = '微信用户'.time();
             $user_id = $this -> user -> insert($data);
             $user_info = $this -> user -> getOne($user_id);
-        }
+        }*/
         $this -> load -> model('Invit_code_model','code');
         $code_condition['code'] = $msg;
         $code_info = $this -> code -> getOneByCondition($code_condition);
