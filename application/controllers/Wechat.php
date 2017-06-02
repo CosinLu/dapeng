@@ -155,6 +155,8 @@ class Wechat extends MY_Controller {
                 $data = ['status' => 1];
                 $res   = $this -> user -> updateByCondition($where,$data);
                 $c_cond['uid'] = $user_info['id'];
+                $c_cond['status'] = 1;
+                $c_cond['use_time'] = time();
                 $c_code['id'] = $code_info['id'];
                 $this -> code -> updateByCondition($c_code,$c_cond);
                 if($res)
