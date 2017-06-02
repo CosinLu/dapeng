@@ -58,7 +58,7 @@
                             <label class="control-label">坐标</label>
                             <div class="controls input-medium">
                                 {%foreach from=$info.coord item=coord%}
-                                    <input type="text" name="coord[]" value="{%$coord%}" placeholder="x,y坐标用,分割" />
+                                <textarea name="coord[]" placeholder="x,y坐标用,分割,内容使用:"></textarea>
                                 {%/foreach%}
                                 <button type="button" class="btn btn-info btn-mini clone_btn">添加坐标点</button>
                             </div>
@@ -83,12 +83,12 @@
     </script>
     <script>
         $(".clone_btn").click(function(){
-            var clone_htm = "<input type='text' name='coord[]' placeholder='x,y坐标用,分割' /><button class='btn btn-info btn-mini del_btn' type='button'>删除坐标点</button>";
+            var clone_htm = "<textarea name='coord[]'></textarea><button class='btn btn-info btn-mini del_btn' type='button'>删除坐标点</button>";
             $(this).after(clone_htm);
             // $(this).append($(this).prev('input').clone(true));
         });
         $(document).on('click','.del_btn',function(){
-            $(this).prev('input').remove();
+            $(this).prev('textarea').remove();
             $(this).remove();
         });
     </script>
