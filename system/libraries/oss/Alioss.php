@@ -70,7 +70,7 @@ class CI_Alioss{
 	 * OSS服务地址
 	 */
 //	const DEFAULT_OSS_HOST = 'oss.aliyuncs.com';
-    const DEFAULT_OSS_HOST = 'oss-cn-beijing.aliyuncs.com';
+    const DEFAULT_OSS_HOST = 'oss-cn-shanghai.aliyuncs.com';
 
 	/**
 	 * 软件名称

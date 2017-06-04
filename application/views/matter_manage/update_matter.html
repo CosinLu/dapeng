@@ -58,7 +58,7 @@
                             <label class="control-label">坐标</label>
                             <div class="controls input-medium">
                                 {%foreach from=$info.coord item=coord%}
-                                <textarea name="coord[]" placeholder="x,y坐标用,分割,内容使用:"></textarea>
+                                <textarea name="coord[]" placeholder="x,y坐标用,分割,内容使用:">{%$coord%}</textarea>
                                 {%/foreach%}
                                 <button type="button" class="btn btn-info btn-mini clone_btn">添加坐标点</button>
                             </div>

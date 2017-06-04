@@ -10,13 +10,12 @@ class Matter_manage extends MY_Controller {
         $this -> load -> model('write_person_model','person');
         $this -> load -> library('oss/alioss');
     }
-    private $bucket = 'cosinlu';
     public function index()
     {
         $condition['status !='] = 0;
         $datas = $this -> matter -> getAllByCondition($condition);
         foreach($datas as $key => &$value){
-            $value['img_path'] = $this -> alioss -> get_sign_url($this -> bucket,$value['img_path']);
+            $value['img_path'] = $this -> alioss -> get_sign_url($this -> config -> item('bucket'),$value['img_path']);
         }
         $this -> assign('datas',$datas);
         $this -> display('matter_manage/index.html');
@@ -51,7 +50,7 @@ class Matter_manage extends MY_Controller {
             $suf_name = explode('.',$_FILES['img_path']['name']);
             $file_name = md5($_FILES['img_path']['name'] . time()).'.'.$suf_name[1];
             if (!empty($file_path)){
-                $response = $this -> alioss -> upload_file_by_file($this -> bucket,$file_name,$file_path);
+                $response = $this -> alioss -> upload_file_by_file($this -> config -> item('bucket'),$file_name,$file_path);
                 if ($response->status == 200)
                 {
                     $params['img_path'] = $file_name;
@@ -72,7 +71,7 @@ class Matter_manage extends MY_Controller {
             $sufName = explode('.',$_FILES['gif_path']['name']);
             $fileName = md5($_FILES['gif_path']['name'] . time()).'.'.$sufName[1];
             if (!empty($filePath)){
-                $response = $this -> alioss -> upload_file_by_file($this -> bucket,$fileName,$filePath);
+                $response = $this -> alioss -> upload_file_by_file($this -> config -> item('bucket'),$fileName,$filePath);
                 if ($response->status == 200){
                     $params['gif_path'] = $fileName;
                 }else{
@@ -144,7 +143,7 @@ class Matter_manage extends MY_Controller {
             $suf_name = explode('.',$_FILES['img_path']['name']);
             $file_name = md5($_FILES['img_path']['name'] . time()).'.'.$suf_name[1];
             if (!empty($file_path)){
-                $response = $this -> alioss -> upload_file_by_file($this -> bucket,$file_name,$file_path);
+                $response = $this -> alioss -> upload_file_by_file($this -> config -> item('bucket'),$file_name,$file_path);
                 if ($response->status == 200)
                 {
                     $params['img_path'] = $file_name;
@@ -165,7 +164,7 @@ class Matter_manage extends MY_Controller {
             $sufName = explode('.',$_FILES['gif_path']['name']);
             $fileName = md5($_FILES['gif_path']['name'] . time()).'.'.$sufName[1];
             if (!empty($filePath)){
-                $response = $this -> alioss -> upload_file_by_file($this -> bucket,$fileName,$filePath);
+                $response = $this -> alioss -> upload_file_by_file($this -> config -> item('bucket'),$fileName,$filePath);
                 if ($response->status == 200){
                     $params['gif_path'] = $fileName;
                 }else{
@@ -228,9 +227,17 @@ class Matter_manage extends MY_Controller {
         exit;
     }
 
+    public function test(){
+        $this -> display('matter_manage/test.html');
+    }
     public function test_oss(){
         $this->load->library('oss/alioss');
-        $a = $this -> alioss -> get_sign_url('cosinlu','f972b8f1db191df4c6428582a2ad4cf2.jpg');
-        echo "<img src='{$a}' />";
+        $filePath = $_FILES['file']['tmp_name'];
+        $sufName = explode('.',$_FILES['file']['name']);
+        $fileName = md5($_FILES['file']['name'] . time()).'.'.$sufName[1];
+        $response = $this -> alioss -> upload_file_by_file($this -> config -> item('bucket'),$fileName,$filePath);
+        dd($response);
+        /*$a = $this -> alioss -> get_sign_url('cosinlu','f972b8f1db191df4c6428582a2ad4cf2.jpg');
+        echo "<img src='{$a}' />";*/
     }
 }
