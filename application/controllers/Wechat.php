@@ -182,7 +182,7 @@ class Wechat extends CI_Controller {
                             'Title'=>$matter_info['field_name'],
                             'Description'=>'',
                             'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
-                            'Url'=>'http://shoshu.51dur.com/home/hr_doc?id='.$matter_info['id']
+                            'Url'=>'http://shoshu.51dur.com/home/h5_doc?id='.$matter_info['id']
                         )
                     );
                     $this->wechat_receive->news($send_data)->reply();
