@@ -45,6 +45,25 @@ class Home extends CI_Controller {
         if(!is_numeric($id) || $id < 1){
             exit('抱歉,数据错误');
         }
+        $this -> load -> model('matter_manage_model','matter');
+        $info = $this -> matter -> getOne($id);
+        if(!empty($info)){
+            $condition['w_id'] = $info['w_id'];
+            $condition['id <>'] = $info['id'];
+            $other_datas = $this -> matter -> getAllByCondition($condition);
+            $this -> load -> library('oss/alioss');
+            if(!empty($other_datas)){
+                foreach ($other_datas as &$value){
+                    $value['img_path'] = $this -> alioss -> get_sign_url($this -> config -> item('bucket'),$value['img_path']);
+                }
+            }
+            $this -> load -> model('write_person_model','person');
+            $write_person_info = $this -> person -> getOne($info['w_id']);
+            $info['img_path'] = $this -> alioss -> get_sign_url($this -> config -> item('bucket'),$info['img_path']);
+        }
+        $this -> smarty -> assign('info',$info);
+        $this -> smarty -> assign('write_person_info',$write_person_info);
+        $this -> smarty -> assign('other_datas',$other_datas);
         $this -> smarty -> display('home/h5_doc.html');
     }
 }
