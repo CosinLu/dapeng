@@ -177,6 +177,7 @@ class Wechat extends CI_Controller {
             $matter_info = $this -> matter -> getOneByCondition($matter_condition);
             if(!empty($matter_info)){
                 if($user_info['status'] == 1){
+                    //url目前为测试的
                     $send_data = array(
                         '0'=>array(
                             'Title'=>$matter_info['field_name'],
