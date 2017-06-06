@@ -181,7 +181,7 @@ class Wechat extends CI_Controller {
                         '0'=>array(
                             'Title'=>$matter_info['field_name'],
                             'Description'=>'',
-                            'PicUrl'=>$this -> alioss -> get_sign_url('cosinlu',$matter_info['img_path']),
+                            'PicUrl'=>$this -> alioss -> get_sign_url($this -> config -> item('bucket'),$matter_info['img_path']),
                             'Url'=>'http://shoshu.51dur.com/home/h5_doc?id='.$matter_info['id']
                         )
                     );
