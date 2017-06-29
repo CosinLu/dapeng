@@ -60,6 +60,7 @@ class Home extends CI_Controller {
             $this -> load -> model('write_person_model','person');
             $write_person_info = $this -> person -> getOne($info['w_id']);
             $info['img_path'] = $this -> alioss -> get_sign_url($this -> config -> item('bucket'),$info['img_path']);
+            $info['gif_path'] = $this -> alioss -> get_sign_url($this -> config -> item('bucket'),$info['gif_path']);
         }
         $this -> smarty -> assign('info',$info);
         $this -> smarty -> assign('write_person_info',$write_person_info);
