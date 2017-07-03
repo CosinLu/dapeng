@@ -185,7 +185,16 @@ class Matter_manage extends MY_Controller {
             </script>";
             exit;
         }
-        $params['coord'] = json_encode($coord);
+//        $params['coord'] = json_encode($coord);
+
+        $arr = [];
+        if(is_array($coord)){
+            for($i = 0;$i < count($coord);$i++){
+                array_push($arr,'['.$coord[$i].']');
+            }
+        }
+        $arr = implode(',',$arr);
+        $params['coord'] = $arr;
         $res = $this -> matter -> update($id,$params);
         if($res){
             echo "<script>alert('修改成功');
