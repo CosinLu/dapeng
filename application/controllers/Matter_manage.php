@@ -185,7 +185,6 @@ class Matter_manage extends MY_Controller {
             </script>";
             exit;
         }
-//        $params['coord'] = json_encode($coord);
 
         $arr = [];
         if(is_array($coord)){
