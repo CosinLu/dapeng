@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
     <title></title>
     <link rel="stylesheet" href="/static/home/css/index.css"/>
+    <link rel="stylesheet" href="/static/home/css/swiper.min.css">
     <script src="/static/home/js/jquery.js"></script>
 </head>
 <body>
@@ -263,7 +264,6 @@
     $(".word_slide ul").css("width",month);
 </script>
 <script type="text/javascript">
-
     var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         paginationClickable: true,
@@ -279,7 +279,8 @@
     var wiheight = $(".slideBox").height()/2-15;
     $(".next").css('top',wiheight);
     $(document).ready(function(){
-        var sstring = $(".id img").attr("data-coord");
+        var arr = $(".id img").attr("data-coord");
+        var sstring =eval("("+arr+")");
         var div="";
         for(var i = 0;i<sstring.length;i++){
             var ff = sstring[i];
